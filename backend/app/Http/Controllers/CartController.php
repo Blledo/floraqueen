@@ -10,6 +10,8 @@ use Illuminate\Http\{
 };
 
 use App\Interfaces\CartRepositoryInterface;
+use App\Http\Requests\CartRequest;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Cart;
 
@@ -22,10 +24,10 @@ class CartController extends Controller
         $this->cartRepository = $cartRepository;
     }
 
-    public function get(Request $request): JsonResponse
+    public function get(CartRequest $request, int $id): JsonResponse
     {
         try {
-            $cart = $this->cartRepository->getById($request->route('id'));
+            $cart = $this->cartRepository->getById($id);
         } catch(Exception $e) {
             return $this->handleError($e->getMessage());
         }
@@ -53,7 +55,7 @@ class CartController extends Controller
         return $this->processData($cart, Response::HTTP_CREATED);
     }
 
-    public function clear(Request $request): JsonResponse
+    public function clear(CartRequest $request): JsonResponse
     {
         try {
             $cart = $this->cartRepository->clear($request->route('id'));
@@ -64,7 +66,7 @@ class CartController extends Controller
         return $this->processData($cart);
     }
 
-    public function delete(Request $request): JsonResponse
+    public function delete(CartRequest $request): JsonResponse
     {
         try {
             $this->cartRepository->delete($request->route('id'));
@@ -75,7 +77,7 @@ class CartController extends Controller
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function add(Request $request): JsonResponse
+    public function add(CartRequest $request): JsonResponse
     {
         try {
             $cart = $this->cartRepository->addProduct(
@@ -90,7 +92,7 @@ class CartController extends Controller
         return $this->processData($cart);
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(CartRequest $request): JsonResponse
     {
         try {
             $cart = $this->cartRepository->updateProduct(
@@ -105,7 +107,7 @@ class CartController extends Controller
         return $this->processData($cart);
     }
 
-    public function remove(Request $request): JsonResponse
+    public function remove(CartRequest $request): JsonResponse
     {
         try {
             $cart = $this->cartRepository->removeProduct(
@@ -119,7 +121,7 @@ class CartController extends Controller
         return $this->processData($cart);
     }
 
-    public function addVoucher(Request $request): JsonResponse
+    public function addVoucher(CartRequest $request): JsonResponse
     {
         try {
             $cart = $this->cartRepository->addVoucher(
@@ -134,7 +136,7 @@ class CartController extends Controller
         return $this->processData($cart);
     }
 
-    public function removeVoucher(Request $request): JsonResponse
+    public function removeVoucher(CartRequest $request): JsonResponse
     {   
         try {
             $cart = $this->cartRepository->removeVoucher(
@@ -151,6 +153,8 @@ class CartController extends Controller
     private function processData(Cart $cart, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
+            'success' => true,
+            'message' => 'Cart info',
             'data' => [
                 'id' => $cart->id,
                 'total' => $cart->getTotal(),
@@ -165,6 +169,8 @@ class CartController extends Controller
     {
         return response()->json(
             [
+                'success' => false,
+                'message' => 'Error',
                 'data' => [
                     'message' => $message
                 ]

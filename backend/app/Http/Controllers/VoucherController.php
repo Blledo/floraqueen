@@ -14,6 +14,11 @@ use App\Interfaces\VoucherRuleRepositoryInterface;
 use App\Models\Voucher;
 use App\Models\VoucherRule;
 
+use App\Http\Requests\VoucherRequest;
+use App\Http\Requests\VoucherUpdateRequest;
+use App\Http\Requests\VoucherRuleRequest;
+use App\Http\Requests\VoucherRuleUpdateRequest;
+
 class VoucherController extends Controller
 {
     private VoucherRepositoryInterface $voucherRepository;
@@ -49,7 +54,7 @@ class VoucherController extends Controller
         return $this->processData($voucher);
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(VoucherRequest $request): JsonResponse
     {
         try {
             $voucher = $this->voucherRepository->create(
@@ -69,7 +74,7 @@ class VoucherController extends Controller
         return $this->processData($voucher, Response::HTTP_CREATED);
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(VoucherUpdateRequest $request): JsonResponse
     {
         try {
             $voucher = $this->voucherRepository->update(
@@ -125,7 +130,7 @@ class VoucherController extends Controller
         return $this->processRule($rule);
     }
 
-    public function createRule(Request $request): JsonResponse
+    public function createRule(VoucherRuleRequest $request): JsonResponse
     {
         try {
             $rule = $this->voucherRuleRepository->create(
@@ -146,7 +151,7 @@ class VoucherController extends Controller
         return $this->processRule($rule);
     }
 
-    public function updateRule(Request $request): JsonResponse
+    public function updateRule(VoucherRuleUpdateRequest $request): JsonResponse
     {   
         try {
             $rule = $this->voucherRuleRepository->update(
@@ -183,6 +188,8 @@ class VoucherController extends Controller
     private function processData(Voucher $voucher, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
+            'success' => true,
+            'message' => 'Voucher info',
             'data' => $voucher
         ], $code);
     }
@@ -190,6 +197,8 @@ class VoucherController extends Controller
     private function processRule(VoucherRule $rule, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
+            'success' => true,
+            'message' => 'Voucher rule info',
             'data' => $rule
         ], $code);
     }
@@ -198,6 +207,8 @@ class VoucherController extends Controller
     {
         return response()->json(
             [
+                'success' => false,
+                'message' => 'Error',
                 'data' => [
                     'message' => $message
                 ]

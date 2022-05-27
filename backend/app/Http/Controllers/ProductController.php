@@ -10,6 +10,8 @@ use Illuminate\Http\{
 };
 
 use App\Interfaces\ProductRepositoryInterface;
+use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -43,7 +45,7 @@ class ProductController extends Controller
         return $this->processData($product);
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(ProductRequest $request): JsonResponse
     {
         try {
             $product = $this->productRepository->create(
@@ -60,7 +62,7 @@ class ProductController extends Controller
         return $this->processData($product, Response::HTTP_CREATED);
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(ProductUpdateRequest $request): JsonResponse
     {
         try {
             $product = $this->productRepository->update(
@@ -92,6 +94,8 @@ class ProductController extends Controller
     private function processData(Product $product, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
+            'success' => true,
+            'message' => 'Product info',
             'data' => $product
         ], $code);
     }
@@ -100,6 +104,8 @@ class ProductController extends Controller
     {
         return response()->json(
             [
+                'success' => false,
+                'message' => 'Error',
                 'data' => [
                     'message' => $message
                 ]
