@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 
 const routes = [
-  { 
+  {
     path: "/",
     name: "ProductListView",
     component: Home,
@@ -11,7 +11,9 @@ const routes = [
     path: "/product-list",
     name: "ProductList",
     component: () =>
-      import(/* webpackChunkName: "product-list" */ "../views/ProductListView.vue"),
+      import(
+        /* webpackChunkName: "product-list" */ "../views/ProductListView.vue"
+      ),
   },
   {
     path: "/product/:id",
@@ -24,7 +26,7 @@ const routes = [
     name: "ProductForm",
     component: () =>
       import(/* webpackChunkName: "product" */ "@/views/ProductFormView.vue"),
-  }
+  },
 ];
 
 const router = createRouter({

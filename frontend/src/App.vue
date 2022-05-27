@@ -7,23 +7,23 @@
 </template>
 
 <script>
-import Footer from '@/components/Footer/Footer';
-import Header from '@/components/Header/Header';
+import Footer from "@/components/Footer/Footer";
+import Header from "@/components/Header/Header";
 
 export default {
-	name: 'App',
-	components: {
-		Header,
-    Footer
-	}
-}
+  name: "App",
+  components: {
+    Header,
+    Footer,
+  },
+};
 </script>
 
 <style>
 * {
   margin: 0px;
   color: #191919;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box !important;
 }
 
